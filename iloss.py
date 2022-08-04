@@ -11,7 +11,7 @@ def iloss(dfC, dfD0):
 	dc = (dfC[cat] != dfD[cat]).sum(axis = 1)
 	il = dn.aggregate(['mean','max'])
 	il['cat'] = dc.aggregate(['mean','max'])
-	il['max'] = il.max(axis = 1)
+	il['mean'] = il.mean(axis = 1)
 	return il
 
 if __name__== "__main__":
@@ -29,7 +29,7 @@ if __name__== "__main__":
 	dc = (dfC[cat] != dfD[cat]).sum(axis = 1)
 	il = dn.aggregate(['mean','max'])
 	il['cat'] = dc.aggregate(['mean','max'])
-	il['mean'] = il.mean(axis = 1)
+	il['max'] = il.max(axis = 1)
 	'''
 	il = iloss(dfC, dfD)
 	print(il)
