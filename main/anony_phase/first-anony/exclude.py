@@ -5,7 +5,7 @@ import sys
 if len(sys.argv) == 1:
     print(sys.argv[0], 'input.csv  exclude.csv [left.csv] [e-left.csv]')
     sys.exit(0)
-   # 從輸入input.csv裡剃除掉exclude.csv寫入的行號，輸出剩餘資料left.csv和剩餘行號e-left.csv
+   # 從輸入input.csv裡剃除掉寫入exclude.csv的行號，輸出剩餘資料left.csv和剩餘行號e-left.csv
 
 df = pd.read_csv(sys.argv[1], header=None)
 ex = pd.read_csv(sys.argv[2], header=None)

@@ -47,7 +47,7 @@ if __name__ == "__main__":
         exit(1)
 
     filename = args[1]
-    anonymfilename = args[2]  
+    anonymfilename = args[2]
     indexfilename = args[3]
     header = 0 if args[4] == "True" else None
     skipinitialspace = True if args[5] == "True" else False

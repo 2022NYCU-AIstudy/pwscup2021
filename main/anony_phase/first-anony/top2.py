@@ -5,7 +5,7 @@ import sys
 if __name__ == "__main__":
     if len(sys.argv) != 5:
         print(sys.argv[0], ' diabetes.csv  col  theta  [ex.csv]')
-        #sys.exit(0)
+        # sys.exit(0)
         # top coding - 輸出比列col的閾值theta更大的行
 
     df = pd.read_csv(sys.argv[1], header=None)
@@ -17,4 +17,4 @@ if __name__ == "__main__":
         x = df.loc[:, int(cols[i])]
         ex |= x > int(thetas[i])
     ex = ex[ex].index.to_series()
-    ex.to_csv(out, index = None, header = None) 
+    ex.to_csv(out, index=None, header=None)

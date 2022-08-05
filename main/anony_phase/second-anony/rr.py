@@ -1,4 +1,4 @@
-# Copyright 2020 Hiroaki Kikuchi 
+# Copyright 2020 Hiroaki Kikuchi
 import pandas as pd
 import sys
 import random
@@ -6,7 +6,7 @@ import numpy as np
 
 
 def rr(x, q):
-#     uniq = np.unique(x.values)
+    #     uniq = np.unique(x.values)
     uniq = x.value_counts().index.values
     y = [i if random.random() < q else random.choice(uniq) for i in x]
     return(y)
