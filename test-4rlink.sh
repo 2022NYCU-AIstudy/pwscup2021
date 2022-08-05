@@ -3,7 +3,7 @@
 source test-0config.sh
 
 # 攻撃
-pytest rlink.py $CT  $D  $E
+pytest attack/${Team}/rlink.py $CT  $D  $E
 
-# 安全性評価
-pytest lmark.py  $EA  $E
+# 安全性評價
+pytest main/attack_phase/mark/lmark.py  $EA  $E

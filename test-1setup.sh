@@ -4,7 +4,7 @@ source test-0config.sh
 
 test -d $Csv || mkdir $Csv
 
-# ヘルスケアデータのダウンロード．CDCから落とすので数秒かかる．
-pytest activ_diabet9_csv.py $B
+# 從CDC下載資料，耗時數秒
+pytest main/anony_phase/begin/activ_diabet9_csv.py $B
 
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-Team=00		# 自分のチーム番号
-You=00		# 攻撃先のチーム番号
+Team=00		# 自己隊伍的編號
+You=00		# 攻擊方隊伍的編號
 python=python3
 Csv=Csv
 B=$Csv/B.csv

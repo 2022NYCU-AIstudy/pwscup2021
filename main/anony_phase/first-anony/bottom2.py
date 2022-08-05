@@ -6,7 +6,7 @@ if __name__ == "__main__":
     if len(sys.argv) <= 4:
         print(sys.argv[0], ' diabetes10.csv col theta [ex.csv]')
         #sys.exit(0)
-        # bottom coding - 列col でしきい値 theta より小さい行を出力する．列は 1_5 の様にベクトルで与えても良い．
+        # bottom coding - 輸出比列col的閾值theta更小的行
 
     df = pd.read_csv(sys.argv[1], header=None)
     cols = sys.argv[2].split('_')

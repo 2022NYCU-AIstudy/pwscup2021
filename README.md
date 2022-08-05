@@ -1,10 +1,6 @@
-# PWSCup 2021 (NHANES diabets)
+# README
 
-PWS Cup 2021は糖尿病罹患リスクを予測するための健康診断データの匿名化とメンバーシップとレコードリンクなどのリスクを評価するコンテスト．匿名化と再識別のためのサンプルコードを提供する．
 
-情報処理学会 PWS Cup 2021 WG
-
-[TOC]
 
 ### Requirement
 
@@ -28,8 +24,7 @@ PWS Cup 2021は糖尿病罹患リスクを予測するための健康診断デ�
   ```
   python activ_diabet9_csv.py B.csv
   ```
-
-  HNANESのXPTファイルをダウンロードして，SEQNで束ねて必要な列のみを抽出し，平均活動量METsなどを算出して， B.csv を出力する．(gh, metsはデータ生成過程で利用されたが，コンテストで使わないため0でクリアされている)
+  下載NHANES的XPT檔，通過與SEQN捆綁僅提取所需的列，計算平均活動量METs等數值，並輸出B.csv。(gh和mets在數據生成過程中會被使用到，但由於未在比賽中使用而後被清除為0。)
 
   | gen  | age  | race  | edu        | mar      | bmi  | dep  | pir  | gh   | mets | qm   | dia  |
   | ---- | ---- | ----- | ---------- | -------- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
@@ -37,146 +32,150 @@ PWS Cup 2021は糖尿病罹患リスクを予測するための健康診断デ�
   | Male | 53   | White | HighSchool | Divorced | 30.8 | 0    | 1    | 0    | 0    | Q1   | 0    |
   | Male | 78   | White | HighSchool | Married  | 28.8 | 0    | 0    | 0    | 0    | Q3   | 1    |
 
-- `syn.py`  データ合成
+- `syn.py`  資料合成
 
   ```
-  python syn.py 入力.csv 出力.csv seed
+  python syn.py [輸入.csv] [輸出.csv] seed
   ```
 
-  入力.csv ファイルの基本統計量（平均，分散共分散）を保持し，各属性のヒストグラム，2属性クロス集計を近似する合成データを出力.csvに出力する．[岡田，正木，長谷川，田中，「統計値を用いたプライバシ保護擬似データ生成手法」，CSS 2017, pp. 1366-1372, 2017] によるアルゴリズムを適用．
-  例） team02 のデータを合成する
+  保留[輸入.csv]的基本統計量（方差，協方差），輸出每個屬性的直方圖和逼近二屬性交叉表的合成數據[輸出.csv]。使用[岡田，正木，長谷川，田中，「統計値を用いたプライバシ保護擬似データ生成手法」，CSS 2017, pp. 1366-1372, 2017]的演算法。
+  例） 合成team02的數據
 
   ```
   python syn.py Csv/B.csv Csv/B02.csv 1110
   a83e7874d95c8c6c39b88d5130e68fdc6594bf72
   ```
 
-  SHA1によるチェックサムが出力される．
+  輸出根據SHA1的核對和。
 
 ### Statistics Analysis 
 
-- `ccount.py`　Cross Count クロス集計
+- `ccount.py`　Cross Count 交叉合計
 
   ```
-  python ccount.py 入力.csv [集計.csv]
+  python ccount.py [輸入.csv (合計.csv)]
   ```
 
-  0-10列目の値を11列目(diabetes)について集計．
-  連続値については，$19 \le age \le 80$, $15 \le bmi \le 70$​ になるようにコーディングしてから集計．
-  鬱病，貧困についても，0.5を基準として，0, 1 に置換して集計．
-  出力の第1列(cnt)はカウント（行数），第2列は比率（全行における割合）を与える．
+  用0-10列的值對11列(diabetes)進行合計。
+  連續值的話，根據$19 \le age \le 80$, $15 \le bmi \le 70$​ 這樣的編碼進行合計。
+  是否憂鬱症，是否貧困此類則用0.5作為基準，用0, 1置換來計算。
+  輸出的第1列(cnt)為count（行數），第2列是比率（在全行中的占比)。
 
-- `cor.py` covariance 共分散行列
+- `cor.py` covariance 共變異數矩陣
 
   ```
-  cor.py		入力.csv [共分散行列.csv]
+  cor.py [輸入.csv(共變異數矩陣.csv)]
   ```
 
-  0-10列目の値を11列目(diabetes)について集計．
-  離散値はOne Hot符号化をして，値の数のダミー変数に変換．（例，0列目は，`0_Male`, `0_Female`の2列で，Maleは(1,0), Femaleは(0,1)にする）
+  用0-10列的值對11列(diabetes)進行合計。
+  離散値用One Hot編碼，值用dummy變數進行轉換。（例，第0列為，`0_Male`, `0_Female`這樣的可選組合，將Male標為(1,0), Female標為(0,1)）
 
-  B.csv の場合，30 x 30の共分散行列を返す．
+  對B.csv則輸出30 x 30的共變異數矩陣。
 
-- `odds6.py`　Odds Ratio オッズ比の比較
+- `odds6.py`　Odds Ratio 勝算比
 
   ```
   odds6.py B.csv D.csv
   ```
 
-  元データB.csvと匿名化データD.csv のそれぞれを，糖尿病(dia)を目的変数としてロジスティック回帰を行い，因子に対するオッズ比(OR)とP値(pvalue)を算出する． BとDのオッズ比の差を算出して，平均誤差と最大誤差を出力．
+  原資料B.csv和去識別化資料D.csv 的各自對作為糖尿病(dia)的目標變數進行多重羅吉斯迴歸分析，算出對各因子的勝算比(OR)和P值(p-value)。 算出B和D的勝算比之差後輸出平均誤差與最大誤差。
 
-- `diabets_or.py`　糖尿病の罹患リスクOR
+- `diabets_or.py`　糖尿病的罹患風險 OR
 
   ```
-  diabets_or.py 入力.csv [OR.csv]
+  diabets_or.py [輸入.csv(OR.csv)]
   ```
 
-  gen + age + race + edu + mar + bmi + dep + pir + qmを説明変数として糖尿病 diaを目的変数としたロジスティック回帰．係数 Coef，オッズ比 OR, p値pvalue を出力．
+  gen + age + race + edu + mar + bmi + dep + pir + qm作為自變數對目標變數糖尿病dia輸出羅吉斯回歸．係數Coef，勝算比OR，p値p-value。
 
-- `activ_diabet_count.py`:クロス集計表算出．diabetes.csv を読む．
+- `activ_diabet_count.py`:算出交叉合計表，讀取diabetes.csv。
 
-- `activ_diabet_sklearn.py`: ロジスティック回帰1. diabetes.csv を読み，sklearnライブラリでOR出力．
+- `activ_diabet_sklearn.py`: 羅吉斯回歸1. 讀取diabetes.csv，用sklearn函式庫輸出OR．
 
-- `activ_diabet_stats.py`: ロジスティック回帰2. diabetes.csv を読み，statsmodelsライブラリでORとp値を算出．
+- `activ_diabet_stats.py`: 羅吉斯回歸2. 讀取diabetes.csv，用statsmodels函式庫輸出OR和p值。
 ### Anonymizing
 - `top2.py`  Top coding 
 
   ```
-  top2.py 入力.csv 列リスト　しきい値リスト [行番号.csv]
+  top2.py [輸入.csv] 列list　閾值list [行號.csv]
   例) top2.py B.csv 1_5 75_50 e-top.csv
   ```
 
-  列col でしきい値 theta より大きい行を出力する．例は，1列(age)が75歳以上，または，5列(bmi)が 50以上 の行を出力する．
+  輸出列中比閾值theta更大的行
+	例)	1列(age)75歲以上、5列(bmi)50以上	
 
 - `bottom2.py` Botom coding 
 
   ```
-  bottom2.py 入力.csv 列リスト しきい値リスト[行番号.csv]
+  bottom2.py [輸入.csv] 列list　閾值list [行號.csv]
   例) bottom2.py B.csv 1_5 22_20 e-bot.csv
   ```
 
-  列col でしきい値 theta より小さい行を出力する．例は，1列(age)が22歳以下，5列(bmi)が20以下の行を出力する．
+	輸出 列中比閾值theta更小的行
+	例)	1列(age)22歲以上、5列(bmi)20以上
 
 - `kanony2.py` K-anonimity 
 
   ```
-  kanony2.py 入力.csv k  列リスト [行番号.csv]
+  kanony2.py [輸入.csv] k 列list [行號.csv]
   例)  kanony2.py B.csv 7 2_3_4  e-ka.csv
   ```
 
-  列columnsを準識別子とみなしてk-匿名化する．削除する行をex.csvへ出力．例は，2列(人種), 3列(学歴)，4列(既婚歴)を準識別子とみなして，k = 7でk-匿名性を満たさない行の番号を e-ka.csv に出力．
+    將列作為準標識符，輸出 不滿足k-匿名的行
+    例)	將第2列(人種)，第3列(學歷)，第2列(婚姻狀況)作為準標識符，把不滿足k =     7的k-匿名性的行號輸出到`e-ka.csv`
 
 - join.py 
 
   ```
-  join.py 行番号ファイルリスト > 統合行番号.csv
+  join.py 行號檔案list > 綜合行號.csv
   ```
 
-  行番号ファイルリスト（任意個）で指定した複数の行番号を束ねて（重複を取り除き）出力する（だけ）．`sort e1.csv e2.csv e3.csv | uniq > e-x.csv`と等価．
+  用行號檔案list（任意個）指定綑綁複數的行號（去除重複）並輸出(只輸出）。與`sort e1.csv e2.csv e3.csv | uniq > e-x.csv`等價。
 
 - exclude.py 
 
   ```
-  exclude.py 入力.csv 排除行番号.csv [残レコード.csv] [残行番号.csv]
+  exclude.py [輸入.csv] [排除行號.csv] [剩餘資料.csv] [剩餘行號.csv]
   例) exclude.py B.csv e-x.csv c-in.csv e-in.csv
   ```
 
-  入力`B.csv`から排除行番号`e-x.csv` を除いて残ったレコードを`C-in.csv` へ出力する．
+  輸出從輸入`B.csv`裡被排除的行號`e-x.csv` 以外的剩餘資料`C-in.csv`。
 
 - `rr.py` Randomized Response 
 
   ```
-  rr.py C.csv p D.csv 列リスト
+  rr.py C.csv p D.csv 列list
   例) rr.py $Csv/c-in.csv  0.9 d-xrr.csv  0_2_3_4_6_7_10
   ```
 
-  入力 C.csv の中の指定された列を維持確率pでランダマイズレスポンス（1-pの確率で値域の中から一様な確率で置換える．例は，0,2,3,4,6,7,10列を全て0.9の確率でランダマイズして，`d-xrr.csv` に出力している．
+對輸入C中指定的列進行維持機率p的隨機化回答(在值域中用1-p的機率替換)
+例)	0, 2, 3, 4, 6, 7, 10列全部用0.9的機率進行隨機化，輸入到`d-xrr.csv`
 
 - `dp2.py` Differential Privacy
 
   ```
-  dp2.py 入力.csv 列リスト εリスト [加工ファイル.csv]
+  dp2.py [輸入.csv] 列list εlist [加工檔案.csv]
   例) dp2.py d-xrr.csv 1_5 1.0_2.0 d-xrrdp.csv
   ```
 
-  差分プライバシーに基づいて行colsにεのラプラスノイズ   
+  根據隱私成本為指定的列添加拉普拉斯噪聲   
   $$
   \frac{\epsilon}{2} e^{-\epsilon |x|}
   $$
-  を加える．例は，1列(age)にはε = 1.0, 5列(bmi)にはε = 2.0 のノイズを加えている．sensitivity = 1 とみなしているので，εで調整する．
+  例)	根據1列(age)的ϵ = 1.0，5列(bmi)的ϵ = 2.0來添加噪音，因為sensitivity = 1，而對ϵ進行調整。
 
-- quantify2.py 	後でやる
+- quantify2.py 	後述
 
 ### Recode Linking
 
-- Pick.py テストレコードのサンプリング
+- Pick.py 測試資料的採樣
 
   ```
   pick.py B.csv Ex.csv C.csv Ea.csv
   例）pick.py B.csv e-x.csv c-100.csv e-a.csv
   ```
 
-  Bの`E-x.csv` (排除行）から50行，Ex以外の保留行から50行をランダムサンプリングして，100行のテストデータ`C.csv`と正解の行番号`e-a.csv`を出力する．
+  從B的`E-x.csv` (排除行）採樣50行，Ex以外的保留行裡再採樣50行，輸出共100行的測試資料`C.csv`與正解的行號`e-a.csv`。
 
   |  B   |  Ex  |  C   |  Ea  |  D   |
   | :--: | :--: | :--: | :--: | :--: |
@@ -191,9 +190,9 @@ PWS Cup 2021は糖尿病罹患リスクを予測するための健康診断デ�
   |  8   |  8   |  ○   |  -1  |      |
   |  9   |      |      |      |  5   |
 
-  Bの10行からExの2行とEx以外の2行を出力した例．Eaは正解行．
+  以上為例．Ea為正解行．
 
-- attack.py レコードリンケージによるメンバーシップ攻撃．ユークリッド距離によるKDTreeを構築して探索している (PWS Cup 2020参照)
+- attack.py 根據Record linkage的Membership攻擊．構築並探索基於歐幾里得距離的KDTree(參照PWS Cup 2020)
 
 - rlink.py 
 
@@ -201,9 +200,7 @@ PWS Cup 2021は糖尿病罹患リスクを予測するための健康診断デ�
   rlink.py  C.csv D.csv E.csv
   例)rlink.py c-100.csv d-xrrdp.csv e-100xrrdp.csv
   ```
-
-  テストデータCの各行が匿名化データDに属さないときは-1（非メンバーシップ），属するときは何行目かを上位k(=3)位まで予測して，Eに出力する．各列のメジアンよりも距離がある行を，-1と推測する（丁度50行を-1と推測する）．レコード間距離は，One Hot Encodingしてユークリッド距離を用いる．列8 (gh), 9 (mets)は用いない．
-  sklearnのKDTree関数を用いたattack.py を呼んでいる．
+  每一行測試資料C中，如果不屬於去識別化資料D，則為-1（非Membership）。如果屬於去則要以最有可能的前k(=3)位推測是第幾行，並輸出為E。將各列中大於中位數的行推斷為-1（要正好把50行標為-1）。至於資料間的距離使用經過One Hot編碼後的歐幾里得距離。不使用第8列(gh)和9(mets)。 
   
   | 1st  | 2nd  | 3rd  |
   | :--: | :--: | :--: |
@@ -215,18 +212,18 @@ PWS Cup 2021は糖尿病罹患リスクを予測するための健康診断デ�
   | 138  | 967  | 2636 |
   |  -1  |  -1  |  -1  |
   
-  Cの2,3,4,7行目はDに属さない(Bから削除された）行と推測．1行目は，第1候補がCの29行目であることを推測．第2，第3候補がそれぞれ，847, 2599行目であることを表す．
+  推測C的2,3,4,7行不屬於D(從B裡被刪除）。第1行推測的第1候補為C的第29行，第2，第3候補各為第847, 2599行。
 
 
 
-### 有用性評価 Utility Metirics 
+### 有用性評價 Utility Metirics 
 - `umark.py`		**U**tlity bench**mark** 
 
   ```
   umark B.csv D.csv
   ```
 
-  有用性評価．BとDの，クロス集計(cnt, rate), オッズ比(Coef,OR,pvalue), 共分散cor の最大値と平均値を出力．
+  有用性評價。輸出B和D的交叉合計(cnt, rate), 勝算比(Coef,OR,pvalue), 共變異數cor的最大值與平均值．
 
   |      | cnt   | rate  | Coef  | OR    | pvalue | cor   |
   | ---- | ----- | ----- | ----- | ----- | ------ | ----- |
@@ -239,7 +236,7 @@ PWS Cup 2021は糖尿病罹患リスクを予測するための健康診断デ�
   iloss.py C.csv D.csv
   ```
   
-  有用性評価．CとDの，行を対応させたL1距離の最大値を評価する．(Max列のMax行の値)
+  有用性評價。對C和D的行所對應之L1距離的最大值進行評估。(Max列的Max行的值)
   例）
 
 	|      | 1    | 5    | cat  | Max  |
@@ -250,7 +247,7 @@ PWS Cup 2021は糖尿病罹患リスクを予測するための健康診断デ�
 
 
 
-### 安全性評価 Privacy Metrics 
+### 安全性評價 Privacy Metrics 
 - `lmark.py`　**L**inkage bench**mark** 
 
   ```
@@ -258,24 +255,24 @@ PWS Cup 2021は糖尿病罹患リスクを予測するための健康診断デ�
   例) lmark.py e-a.csv e-100xrrdp.csv
   ```
 
-  正解行番号Ea.csv と推定行番号E.csv を検査して，次の安全性 recall, precision, top-k を評価する．
+  檢查正解行號Ea.csv 與推測行號E.csv，評估接下來的安全性 recall, precision, top-k。
   $$
   recall = \frac{|E_a \cap E|}{|E_a|}, \, prec = \frac{|E_a \cap E|}{|E|}, top_k = \frac{|\{x \in E_a| x \in E[x]\}|}{k}
   $$
-  ここで，E_a とEは`Ea.csv` と`E.csv` の中の正の行番号(＝排除されていない行）からなる集合とする．$E[x]$​​ は行xに対応する推測行番号の上位k位までの集合．
+  E_a 和E是`Ea.csv` 和`E.csv` 中的行號(＝沒被排除的行號）所形成的集合．$E[x]$​​ 是對應行x的推測行號的前k位之集合。
   
   
 
-### 安全性評価 Unique Rate 
+### 安全性評價 Unique Rate 
 
-- `uniqrt.py`　**Uniq**ue Rate 
+- `uniqrt.py`　**Uniq**ue Rate  
 
   ```
   uniqrt.py  B.csv C.csv
   例) uniqrt.py CSV/B.csv Csv/c-in.csv
   ```
 
-  第一匿名化（特異な行の削除）されたデータC.csvの中の，一意な行の割合を評価する．ただし，連続値(age, bmi)については，10の位で丸めた値を用いて評価する．
+  進行第一去識別化（刪除特異行）的資料C.csv中，評估唯一行的比例。對於連續值(age, bmi)四捨五入到最近的10。
   $$
   \begin{eqnarray}
   %unique_1(C) &=& \frac{|\{c_i \in C| \forall c_j \in C-\{c_i\}, c_i \ne c_j\}|}{|C|} \\
@@ -286,10 +283,10 @@ PWS Cup 2021は糖尿病罹患リスクを予測するための健康診断デ�
   
   
 
-### フォーマットチェッカー
+### 格式檢查
 
 - `checkDX.py`　
-  加工フェーズの提出物(匿名化データD, 排除行データX)の形式チェック
+  加工階段的提出檔案(去識別化資料D, 排除行資料X)的格式檢查
 
   ```
   checkDX.py B.csv D.csv X.csv
@@ -307,25 +304,25 @@ PWS Cup 2021は糖尿病罹患リスクを予測するための健康診断デ�
   (695, 1) OK
   ```
 
-  Dに関しては，
+  對於D，
 
-  1. 数値列(1,5,6,7,11)が整数または実数であるか
-  2. 名義列(0,2,3,4,10)がオブジェクトであるか
-  3. 列1(年齢)，列5(BMI)が，値域[13, 85], [13, 75]にあるか，列6(鬱病)，列7(貧困), 列11(糖尿病)が{0,1}の値か．
-  4. 列0 (性別)，列2(人種)，列3(学歴)，列4(既婚歴)，列10(活動量)がB.csv の値域の中にあるかどうか
-  5. Dの行数が$|B|/2 = 1709$行以上あり，12 列あるか．
+  1. 數值列(1,5,6,7,11)是否為整數或是實數
+  2. 名義列(0,2,3,4,10)是否為Object
+  3. 列1(年齢)，列5(BMI)的值域是否在[13, 85], [13, 75]，列6(憂鬱症)，列7(貧困), 列11(糖尿病)的值域是否為{0,1}．
+  4. 列0 (性別)，列2(人種)，列3(學歷)，列4(婚姻狀態)，列10(活動量)是否在B.csv 的值域
+  5. D的行數是否在$|B|/2 = 1709$以上，是否有12列。
   
-  をそれぞれ検査します．Xに関しては，
+  進行以上的檢查。對於X，
   
-  1. 整数型であるか
-  2. 重複する行を指定していないか
-  3. $|X|_{行数}+|D|_{行数} = |B|_{行数}$​ になっているか
+  1. 是否為整數型(int)
+  2. 是否指定到重複的行
+  3. 是否為$|X|_{行數}+|D|_{行數} = |B|_{行數}$​
   
-  を検査しています．全てに OK が出れば合格です
+  進行以上的檢查。全數OK即合格。
   
 - `checkE.py`
 
-  攻撃フェーズの提出物(推定行番号データE)の形式チェック
+  攻擊階段的提出檔案(推定行號資料E)的格式檢查
 
   ```
   checkE.py B.csv E.csv
@@ -336,25 +333,25 @@ PWS Cup 2021は糖尿病罹患リスクを予測するための健康診断デ�
   E: min OK
   ```
 
-  推定行番号が，
+  對於推定行號，
 
-  1. 100行，3列のデータか
-  2. 全ての列が整数型(int)か
-  3. 全ての列について，$-1 \le 推定行 \le n$​​　の範囲内か
+  1. 是否為100行，3列的資料
+  2. 全部的列是否為整數型(int)
+  3. 全部的列是否在$-1 \le 推定行 \le n$​​ 的範圍內
 
-  を検査します．全てにOKが出れば合格です．
+  進行以上的檢查。全數OK即合格．
 
 
 
-### 実行スクリプト
+### 施行腳本
 
-`bash スクリプト名`で実行する．（OSによってshが使えない時は，スクリプト内のpytest の部分だけを順に実行）
+施行`bash 腳本名`。（在OS無法用sh的時候，只按順序執行腳本中的pytest部分）
 
-1. `test-0config.sh` 自分のチーム番号Team, 攻撃先チーム番号You，pythonのパス，生成ファイル格納ディレクトリCsvなどを設定する．
+1. `test-0config.sh` 自己的隊伍編號Team, 攻撃方隊伍編號You，python的路徑，設置生成檔案儲存目錄的csv等等。
 
-2. `test-1setup.sh` ヘルスケアデータをCDCからダウンロードする．最初に一度だけ実行する．全ファイルを落とすのに数秒かかる．
+2. `test-1setup.sh` 把衛生保健資料從CDC下載。最一開始運行即可。刪除所有文件需要幾秒鐘。
 
-3. `test-2anonymize.sh` （匿名化フェーズ）加工から有用性評価を実行する．Category_encodersのwarningが出ることもある．rr, dp はランダム要素があり，毎回結果が違う．
+3. `test-2anonymize.sh` （去識別化階段）對加工進行有用性評價。Category_encoders會出現warning。rr, dp有隨機的要素存在，毎回結果會有差異．
 
      ```
      $ bash test-2anonymize.sh
@@ -376,9 +373,9 @@ PWS Cup 2021は糖尿病罹患リスクを予測するための健康診断デ�
      mean  114.606061  0.010027  0.102278  0.082985  0.129358  0.015871
      ```
 
-4. `test-3pick.sh`　評価データをBからテストデータCTをサンプリングする．事務局が行なう処理．
+4. `test-3pick.sh`　將評價資料從來自B的測試資料CT採樣出來，交給評審處理。
 
-5. `test-4rlink.sh` （攻撃フェーズ）メンバーシップ推定とレコードリンクを試み，推定結果を出力する．
+5. `test-4rlink.sh` （攻擊階段）進行membership推定與record link，輸出推定結果。
 
    ```
    $ bash test-4rlink.sh 
@@ -391,29 +388,4 @@ PWS Cup 2021は糖尿病罹患リスクを予測するための健康診断デ�
    dtype: float64
    ```
 
-6. Test-5check.sh 提出ファイル(D, X, E)のフォーマット検査を行なう．全てにOK が出れば良い．
-
-### FAQ
-
-[PWS Cup 2021 FAQ](FAQ.md)
-
-
-
-Aug. 17, 2021 update
-
-Aug. 19, 2021 update (Iloss指標)
-
-Aug. 23, 2021 update (表記の訂正)
-
-Sep. 14, 2021 update (syn.py の追加)
-
-
-
-
-
-
-
-
-
-
-
+6. `test-5check.sh` 進行提出檔案(D, X, E)的格式檢查。全部都印出OK則合格。

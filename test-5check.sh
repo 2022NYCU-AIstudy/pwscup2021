@@ -2,8 +2,8 @@
 
 source test-0config.sh
 
-# 加工データ (D, X)のフォーマット検査
-pytest checkDX.py $B $D $X
+# 去識別化資料(D, X)的格式檢查
+pytest main/anony_phase/check/checkDX.py $B $D $X
 
-# 攻撃データ (E)のフォーマット検査
-pytest checkE.py $B $E
+# 攻擊資料(E)的格式檢查
+pytest main/attack_phase/check/checkE.py $B $E

@@ -6,7 +6,7 @@ if __name__ == "__main__":
     if len(sys.argv) != 5:
         print(sys.argv[0], ' diabetes.csv  col  theta  [ex.csv]')
         #sys.exit(0)
-        # top coding - 列col でしきい値 theta より大きい行を出力する．列は 1_5 の様に複数与えても良い．
+        # top coding - 輸出比列col的閾值theta更大的行
 
     df = pd.read_csv(sys.argv[1], header=None)
     cols = sys.argv[2].split('_')
