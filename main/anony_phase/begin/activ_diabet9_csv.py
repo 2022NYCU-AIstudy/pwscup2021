@@ -60,9 +60,9 @@ df3['RIDRETH1'] = df2['RIDRETH1'].map(
     {1: 'Mexican', 2: 'Hispanic', 3: 'White', 4: 'Black', 5: 'Other'})
 
 df3['DMDEDUC2'] = df2['DMDEDUC2'].map(
-    {1: '9th', 2: '11th', 3: 'HighSchool', 4: 'College', 5: 'Graduate'})  # 9 'Missing' (3件) はNaN
+    {1: '9th', 2: '11th', 3: 'HighSchool', 4: 'College', 5: 'Graduate'})  # 9 'Missing' (3件) 為NaN
 df3['DMDMARTL'] = df2['DMDMARTL'].map(
-    {1: 'Married', 2: 'Widowed', 3: 'Divorced', 4: 'Separated', 5: 'Never', 6: 'Parther'})  # 77 'refused' (1件)はNaN
+    {1: 'Married', 2: 'Widowed', 3: 'Divorced', 4: 'Separated', 5: 'Never', 6: 'Parther'})  # 77 'refused' (1件)為NaN
 
 df3['DPQ020'] = df2.eval('1 <= DPQ020 <= 3 ').astype(int)
 df3['INDFMMPI'] = df2.eval('INDFMMPI < 1.0').astype(int)
