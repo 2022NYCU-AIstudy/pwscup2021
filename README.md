@@ -32,21 +32,6 @@
   | Male | 53   | White | HighSchool | Divorced | 30.8 | 0    | 1    | 0    | 0    | Q1   | 0    |
   | Male | 78   | White | HighSchool | Married  | 28.8 | 0    | 0    | 0    | 0    | Q3   | 1    |
 
-- `syn.py`  資料合成
-
-  ```
-  python syn.py [輸入.csv] [輸出.csv] seed
-  ```
-
-  保留[輸入.csv]的基本統計量（方差，協方差），輸出每個屬性的直方圖和逼近二屬性交叉表的合成數據[輸出.csv]。使用[岡田，正木，長谷川，田中，「統計値を用いたプライバシ保護擬似データ生成手法」，CSS 2017, pp. 1366-1372, 2017]的演算法。
-  例） 合成team02的數據
-
-  ```
-  python syn.py Csv/B.csv Csv/B02.csv 1110
-  a83e7874d95c8c6c39b88d5130e68fdc6594bf72
-  ```
-
-  輸出根據SHA1的核對和。
 
 ### Statistics Analysis 
 
